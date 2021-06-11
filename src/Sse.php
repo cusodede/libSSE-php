@@ -14,20 +14,20 @@ use yii\web\Response;
 class Sse
 {
     /**
-     * Seconds to sleep after the data has been sent.
+     * Длительность слипа после отправки данных клиенту.
      * @var float
      */
     public float $sleepTime = 0.5;
     /**
-     * The time limit of the script in seconds.
+     * Лайфтайм соединения с клиентом, по истечении - отрубаем обмен информацией.
      * @var float|int
      */
     public float $execLimit = 600;
     /**
-     * The time client to reconnect after connection has lost in seconds.
+     * Рекомендуемая задержка при возобновлении соединения в случае его обрыва.
      * @var int
      */
-    public int $reconnectTime = 1;
+    public int $retryTime = 10;
     /**
      * The interval of sending a signal to keep the connection alive.
      * @var int
@@ -137,7 +137,7 @@ class Sse
         $callback = function () {
             $this->setStart(time());
 
-            echo 'retry: ' . ($this->reconnectTime * 1000) . "\n";    // Set the retry interval for the client
+            echo 'retry: ' . ($this->retryTime * 1000) . "\n";    // Set the retry interval for the client
             while (true) {
                 // Leave the loop if there are no more handlers
                 if (!$this->hasEventListeners()) {
