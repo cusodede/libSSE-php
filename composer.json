@@ -2,11 +2,11 @@
   "name": "cusodede/sse",
   "version": "2.1.3",
   "description": "An easy-to-use, object-oriented library for Server-Sent Events",
-  "type": "library",
+  "type": "yii2-extension",
   "keywords": [
     "sse"
   ],
-  "homepage": "https://github.com/licson0729/libSSE-php",
+  "homepage": "https://github.com/cusodede/yii2-sse",
   "license": "MIT",
   "authors": [
     {
@@ -22,6 +22,8 @@
       "role": "Developer"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": "~7.4|~8.0"
   },
