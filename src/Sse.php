@@ -11,7 +11,7 @@ use yii\web\Response;
  * Class SSE
  * @package cusodede\sse
  */
-class SSE
+class Sse
 {
     /**
      * Seconds to sleep after the data has been sent.
@@ -123,6 +123,8 @@ class SSE
 
     public function start(): void
     {
+        $this->init();
+
         $response = $this->createResponse();
         $response->send();
     }
@@ -130,10 +132,8 @@ class SSE
     /**
      * @return Response
      */
-    public function createResponse(): Response
+    private function createResponse(): Response
     {
-        $this->init();
-
         $callback = function () {
             $this->setStart(time());
 
@@ -161,7 +161,7 @@ class SSE
                 }
 
                 // Break if the time exceed the limit
-                if ($this->execLimit !== 0 && $this->getUptime() > $this->execLimit) {
+                if (connection_aborted() || ($this->execLimit !== 0 && $this->getUptime() > $this->execLimit)) {
                     break;
                 }
 
@@ -195,26 +195,14 @@ class SSE
     private function init(): void
     {
         set_time_limit(0); // Disable time limit
-
-        // Prevent buffering
-        if (function_exists('apache_setenv')) {
-            apache_setenv('no-gzip', 1);
-        }
-
-        ini_set('zlib.output_compression', '0');
-        ini_set('implicit_flush', '1');
-
-        while (ob_get_level() !== 0) {
-            ob_end_flush();
-        }
-
-        ob_implicit_flush();
     }
 
     private function flush(): void
     {
-        @ob_flush();
-        @flush();
+        while (ob_get_level() > 0) {
+            ob_end_flush();
+        }
+        flush();
     }
 
     /**
