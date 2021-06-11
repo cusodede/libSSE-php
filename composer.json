@@ -1,6 +1,6 @@
 {
   "name": "cusodede/sse",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "An easy-to-use, object-oriented library for Server-Sent Events",
   "type": "yii2-extension",
   "keywords": [
