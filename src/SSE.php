@@ -187,7 +187,7 @@ class SSE
         return $response;
     }
 
-    public function setStart(int $value): void
+    private function setStart(int $value): void
     {
         $this->_start = $value;
     }
@@ -211,7 +211,7 @@ class SSE
         ob_implicit_flush();
     }
 
-    public function flush(): void
+    private function flush(): void
     {
         @ob_flush();
         @flush();
@@ -230,7 +230,7 @@ class SSE
      * @param string $data
      * @param string|null $name
      */
-    public function sendBlock(int $id, string $data, ?string $name = null): void
+    private function sendBlock(int $id, string $data, ?string $name = null): void
     {
         $this->send("id: $id\n");
         if (!empty($name)) {
@@ -252,7 +252,7 @@ class SSE
     /**
      * @return int
      */
-    public function getUptime(): int
+    private function getUptime(): int
     {
         return time() - $this->_start;
     }
@@ -260,12 +260,12 @@ class SSE
     /**
      * @return bool
      */
-    public function isTick(): bool
+    private function isTick(): bool
     {
         return $this->getUptime() % $this->connectionSignalInterval === 0;
     }
 
-    public function sleep(): void
+    private function sleep(): void
     {
         usleep((int) ($this->sleepTime * 1000000));
     }
@@ -273,7 +273,7 @@ class SSE
     /**
      * @return int
      */
-    public function getNewId(): int
+    private function getNewId(): int
     {
         return ++$this->_id;
     }
